@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "xyz.teodorowicz.ai"
+    namespace = "xyz.teodorowicz.assistant"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "xyz.teodorowicz.ai"
+        applicationId = "xyz.teodorowicz.assistant"
         minSdk = 29
         targetSdk = 34
         versionCode = 1

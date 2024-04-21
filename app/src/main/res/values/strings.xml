@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">AI Assistant</string>
-    <string name="google_auth_client_id">62086983565-3ngmf4b6i5gbt9k3lreqg8taf52mg934.apps.googleusercontent.com</string>
+    <string name="google_auth_client_id">1059679513497-aaa9nl5b8q60h3me8cl0lh38avbm1cdq.apps.googleusercontent.com</string>
     <string name="server_url">http://10.0.2.2:8080</string>
 </resources>

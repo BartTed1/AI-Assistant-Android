@@ -1,41 +1,70 @@
 {
   "project_info": {
-    "project_number": "62086983565",
-    "project_id": "ai-assistant-674fa",
-    "storage_bucket": "ai-assistant-674fa.appspot.com"
+    "project_number": "1059679513497",
+    "project_id": "ai-assistant-f63d3",
+    "storage_bucket": "ai-assistant-f63d3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:62086983565:android:9e11be52f7c63475fd57c4",
+        "mobilesdk_app_id": "1:1059679513497:android:022664eff423ebf6bac108",
         "android_client_info": {
           "package_name": "xyz.teodorowicz.ai"
         }
       },
       "oauth_client": [
         {
-          "client_id": "62086983565-lktq17kni5ia9918i1a1vapkg3h1ujs2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "xyz.teodorowicz.ai",
-            "certificate_hash": "b3f3859549da5333bef8a3172c7c87a9c68a13ac"
-          }
-        },
-        {
-          "client_id": "62086983565-3ngmf4b6i5gbt9k3lreqg8taf52mg934.apps.googleusercontent.com",
+          "client_id": "1059679513497-aaa9nl5b8q60h3me8cl0lh38avbm1cdq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByylHty5u306ZGxgaD0IMQuqMXnbPSSkw"
+          "current_key": "AIzaSyAelL59_J_spx7UzPctspwt1r239VXVDOk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "62086983565-3ngmf4b6i5gbt9k3lreqg8taf52mg934.apps.googleusercontent.com",
+              "client_id": "1059679513497-aaa9nl5b8q60h3me8cl0lh38avbm1cdq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059679513497:android:d732f6f7f98b6dc5bac108",
+        "android_client_info": {
+          "package_name": "xyz.teodorowicz.assistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059679513497-apf995avsfiol03ro7tqhcbhpjet5a9q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "xyz.teodorowicz.assistant",
+            "certificate_hash": "b3f3859549da5333bef8a3172c7c87a9c68a13ac"
+          }
+        },
+        {
+          "client_id": "1059679513497-aaa9nl5b8q60h3me8cl0lh38avbm1cdq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAelL59_J_spx7UzPctspwt1r239VXVDOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059679513497-aaa9nl5b8q60h3me8cl0lh38avbm1cdq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
