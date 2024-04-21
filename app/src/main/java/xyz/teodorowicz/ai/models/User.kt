@@ -32,21 +32,4 @@ data class User(
             )
         }
     }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    override suspend fun register(context: Context): Deferred<Any> {
-        return GlobalScope.async {
-            try {
-                val url = "${baseUrl(context)}/auth/register"
-                val response = client.post(url) {
-                    contentType(io.ktor.http.ContentType.Application.Json)
-                    setBody(this@User)
-                }
-                return@async true
-            } catch (e: Exception) {
-                return@async e
-
-            }
-        }
-    }
 }

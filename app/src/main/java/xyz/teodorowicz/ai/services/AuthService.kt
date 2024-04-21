@@ -27,6 +27,7 @@ class AuthService(private val activity: ComponentActivity) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     lateinit var signInLauncher: ActivityResultLauncher<Intent>
     var isSignInLauncherInitialized = false
+    val sharedPreferencesService = SharedPreferencesService(activity)
 
     init {
         initSignInLauncher()
@@ -76,38 +77,67 @@ class AuthService(private val activity: ComponentActivity) {
         }
     }
 
+    suspend fun getGoogleTokenFromRefreshToken(refreshToken: String) {
+        if (sharedPreferencesService.getString("refreshToken") == null) {
+            val intent = Intent(activity, LoginActivity::class.java)
+            activity.startActivity(intent)
+            activity.finish()
+        }
+        val credential = GoogleAuthProvider.getCredential(refreshToken, null)
+        try {
+            val authResult = auth.signInWithCredential(credential).await()
+            val firebaseUser = authResult.user
+            if (firebaseUser == null) {
+                Toast.makeText(activity, "Brak połączenia z internetem", Toast.LENGTH_LONG).show()
+                return
+            }
+            val token = firebaseUser.getIdToken(true).await().token
+            sharedPreferencesService.saveString("token", token ?: "")
+        } catch (e: Exception) {
+            if (e is FirebaseNetworkException) {
+                Toast.makeText(activity, "Brak połączenia z internetem", Toast.LENGTH_LONG).show()
+                return
+            }
+            e.printStackTrace()
+        }
+    }
+
     private suspend fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         try {
             val authResult = auth.signInWithCredential(credential).await()
             val firebaseUser = authResult.user
             if (firebaseUser != null) {
-                Log.i("AuthService", "signInWithCredential:success")
-                Log.i("AuthService", "User: ${firebaseUser.displayName}")
-
+                val token = firebaseUser.getIdToken(true).await().token
+                activity.runOnUiThread { Log.i("AuthService:Token", idToken ?: "") }
                 val user = User.fromFirebaseUser(firebaseUser)
-                val registered = withContext(Dispatchers.IO) { user.register(activity).await() }
+                val userService = UserService(user)
+                val registered = withContext(Dispatchers.IO) { userService.register(activity, token).await() }
 
                 if (registered is Exception)  activity.runOnUiThread { throw registered }
                 else if (registered is Boolean && registered) {
+                    sharedPreferencesService.saveString("token", token ?: "")
+                    sharedPreferencesService.saveString("userFirstName", user.firstName)
+                    sharedPreferencesService.saveString("userLastName", user.lastName)
+                    sharedPreferencesService.saveString("userEmail", user.email)
+                    sharedPreferencesService.saveString("userPhotoUrl", user.photoUrl)
+                    sharedPreferencesService.saveString("refreshToken", idToken)
+
                     val intent = Intent(activity, MainActivity::class.java)
                     activity.startActivity(intent)
                     activity.finish()
                 } else {
-                    activity.runOnUiThread {
-                        Toast.makeText(activity, "Nie udało się zarejestrować użytkownika", Toast.LENGTH_LONG).show()
-                    }
+                    activity.runOnUiThread { Toast.makeText(activity, "Nie udało się zarejestrować użytkownika", Toast.LENGTH_LONG).show() }
                 }
             } else {
-                Log.w("FirstRunActivity", "signInWithCredential:failure")
                 Toast.makeText(activity, "Brak połączenia z internetem", Toast.LENGTH_LONG).show()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e("FirstRunActivity", "signInWithCredential:failure", e)
             if (e is FirebaseNetworkException) {
                 Toast.makeText(activity, "Brak połączenia z internetem", Toast.LENGTH_LONG).show()
+                return
             }
+            e.printStackTrace()
         }
     }
 }

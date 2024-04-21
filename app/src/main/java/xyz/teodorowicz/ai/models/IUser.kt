@@ -9,6 +9,4 @@ interface IUser {
     val lastName: String
     val email: String
     val photoUrl: String
-
-    suspend fun register(context: Context): Deferred<Any>
 }
