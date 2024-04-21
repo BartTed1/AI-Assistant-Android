@@ -1,4 +1,4 @@
-package xyz.teodorowicz.assistant.listeners
+package xyz.teodorowicz.ai.listeners
 
 import android.content.Context
 import android.net.ConnectivityManager

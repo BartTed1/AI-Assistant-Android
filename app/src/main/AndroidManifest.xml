@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="xyz.teodorowicz.ai"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature
@@ -13,6 +14,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -26,7 +28,6 @@
         <activity
             android:name=".views.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.AIAssistant">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +35,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".views.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AIAssistant" />
+
     </application>
 
 </manifest>

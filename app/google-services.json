@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "62086983565",
+    "project_id": "ai-assistant-674fa",
+    "storage_bucket": "ai-assistant-674fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62086983565:android:9e11be52f7c63475fd57c4",
+        "android_client_info": {
+          "package_name": "xyz.teodorowicz.ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62086983565-lktq17kni5ia9918i1a1vapkg3h1ujs2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "xyz.teodorowicz.ai",
+            "certificate_hash": "b3f3859549da5333bef8a3172c7c87a9c68a13ac"
+          }
+        },
+        {
+          "client_id": "62086983565-3ngmf4b6i5gbt9k3lreqg8taf52mg934.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByylHty5u306ZGxgaD0IMQuqMXnbPSSkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62086983565-3ngmf4b6i5gbt9k3lreqg8taf52mg934.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

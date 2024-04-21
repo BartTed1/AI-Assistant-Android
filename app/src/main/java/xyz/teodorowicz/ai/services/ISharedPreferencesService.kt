@@ -1,4 +1,4 @@
-package xyz.teodorowicz.assistant.services
+package xyz.teodorowicz.ai.services
 
 interface ISharedPreferencesService {
     fun saveString(key: String, value: String)

@@ -1,4 +1,4 @@
-package xyz.teodorowicz.assistant.composables
+package xyz.teodorowicz.ai.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,7 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import xyz.teodorowicz.assistant.ui.theme.Theme
+import xyz.teodorowicz.ai.ui.theme.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

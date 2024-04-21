@@ -1,14 +1,16 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.gms.google-services")
+    kotlin("plugin.serialization") version "1.5.30"
 }
 
 android {
-    namespace = "xyz.teodorowicz.assistant"
+    namespace = "xyz.teodorowicz.ai"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "xyz.teodorowicz.assistant"
+        applicationId = "xyz.teodorowicz.ai"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -32,6 +34,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs += "-Xextended-compiler-checks"
     }
     buildFeatures {
         compose = true
@@ -47,6 +50,18 @@ android {
 }
 
 dependencies {
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.serialization.gson)
+    implementation(libs.ktor.client.json)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.android)
+    implementation(libs.play.services.auth)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.insets)
+    implementation(libs.firebase.auth)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

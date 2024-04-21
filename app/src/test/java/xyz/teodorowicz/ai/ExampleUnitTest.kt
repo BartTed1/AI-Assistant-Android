@@ -1,4 +1,4 @@
-package xyz.teodorowicz.assistant
+package xyz.teodorowicz.ai
 
 import org.junit.Test
 

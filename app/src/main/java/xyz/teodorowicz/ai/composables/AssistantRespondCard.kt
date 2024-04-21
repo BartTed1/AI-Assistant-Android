@@ -1,4 +1,4 @@
-package xyz.teodorowicz.assistant.composables
+package xyz.teodorowicz.ai.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import xyz.teodorowicz.assistant.ui.theme.Theme
+import xyz.teodorowicz.ai.ui.theme.Theme
 
 @Composable
 fun AssistantRespondCard(text: String = "Hello! How can I help you?") {

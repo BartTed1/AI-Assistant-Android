@@ -1,4 +1,4 @@
-package xyz.teodorowicz.assistant.ui.theme
+package xyz.teodorowicz.ai.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

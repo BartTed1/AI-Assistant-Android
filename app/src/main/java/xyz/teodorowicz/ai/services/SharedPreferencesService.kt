@@ -1,4 +1,4 @@
-package xyz.teodorowicz.assistant.services
+package xyz.teodorowicz.ai.services
 
 import android.content.Context
 import android.content.SharedPreferences
