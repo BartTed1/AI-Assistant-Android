@@ -1,7 +1,6 @@
-package xyz.teodorowicz.ai.model
+package xyz.teodorowicz.ai.models
 
 import android.content.Context
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Deferred
 
 interface IUser {

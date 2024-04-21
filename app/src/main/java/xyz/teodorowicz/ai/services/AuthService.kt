@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import xyz.teodorowicz.ai.R
-import xyz.teodorowicz.ai.model.User
+import xyz.teodorowicz.ai.models.User
 import xyz.teodorowicz.ai.views.LoginActivity
 import xyz.teodorowicz.ai.views.MainActivity
 
@@ -88,12 +88,7 @@ class AuthService(private val activity: ComponentActivity) {
                 val user = User.fromFirebaseUser(firebaseUser)
                 val registered = withContext(Dispatchers.IO) { user.register(activity).await() }
 
-                if (registered is Exception) {
-                    activity.runOnUiThread {
-                        // Log.i("Error", "Nie udało się zarejestrować użytkownika: $registered")
-                        throw registered
-                    }
-                }
+                if (registered is Exception)  activity.runOnUiThread { throw registered }
                 else if (registered is Boolean && registered) {
                     val intent = Intent(activity, MainActivity::class.java)
                     activity.startActivity(intent)

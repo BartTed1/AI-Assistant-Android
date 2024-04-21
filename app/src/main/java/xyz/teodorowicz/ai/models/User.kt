@@ -1,9 +1,8 @@
-package xyz.teodorowicz.ai.model
+package xyz.teodorowicz.ai.models
 
 import android.content.Context
 import com.google.firebase.auth.FirebaseUser
 import io.ktor.client.request.post
-import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
