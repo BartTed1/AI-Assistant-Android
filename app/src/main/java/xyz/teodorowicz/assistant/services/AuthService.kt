@@ -113,12 +113,14 @@ class AuthService(private val activity: ComponentActivity) {
         }
     }
 
-    private suspend fun getGoogleTokenFromRefreshToken(): String? {
+    @Deprecated("Use getToken() instead")
+    private suspend fun getGoogleTokenFromIdToken(): String? {
         val refreshToken = sharedPreferencesService.getString("refreshToken")
         if (refreshToken == null) {
             val intent = Intent(activity, LoginActivity::class.java)
             activity.startActivity(intent)
             activity.finish()
+            return null
         }
         val credential = GoogleAuthProvider.getCredential(refreshToken, null)
         try {
@@ -142,10 +144,24 @@ class AuthService(private val activity: ComponentActivity) {
         }
     }
 
+    private suspend fun refreshToken(): String? {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            val intent = Intent(activity, LoginActivity::class.java)
+            activity.startActivity(intent)
+            activity.finish()
+            return null
+        }
+        val token = currentUser.getIdToken(true).await().token
+        sharedPreferencesService.saveString("token", token ?: "")
+        sharedPreferencesService.saveInt("tokenIssuedAt", ((System.currentTimeMillis() - 10) / 1000).toInt())
+        return token
+    }
+
     suspend fun getToken(): String? {
         val tokenIssuedAt = sharedPreferencesService.getInt("tokenIssuedAt")
         if (tokenIssuedAt + 3600 > (System.currentTimeMillis() / 1000)) return sharedPreferencesService.getString("token")
-        return getGoogleTokenFromRefreshToken()
+        return refreshToken()
 
     }
 }
