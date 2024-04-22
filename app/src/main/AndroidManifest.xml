@@ -39,6 +39,10 @@
             android:name="xyz.teodorowicz.assistant.views.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.AIAssistant" />
+        <activity
+            android:name="xyz.teodorowicz.assistant.views.ConfigureView"
+            android:exported="true"
+            android:theme="@style/Theme.AIAssistant" />
 
     </application>
 

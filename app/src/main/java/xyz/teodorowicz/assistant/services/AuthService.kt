@@ -26,14 +26,9 @@ import xyz.teodorowicz.assistant.views.MainActivity
 class AuthService(private val activity: ComponentActivity) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     lateinit var signInLauncher: ActivityResultLauncher<Intent>
-    var isSignInLauncherInitialized = false
     val sharedPreferencesService = SharedPreferencesService(activity)
 
-    init {
-        initSignInLauncher()
-    }
-
-    private fun initSignInLauncher() {
+    fun initSignInLauncher() {
         signInLauncher = activity
             .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 activity.lifecycleScope.launch {
@@ -86,7 +81,7 @@ class AuthService(private val activity: ComponentActivity) {
                 val token = firebaseUser.getIdToken(true).await().token
                 activity.runOnUiThread { Log.i("AuthService:Token", idToken ?: "") }
                 val user = User.fromFirebaseUser(firebaseUser)
-                val userService = UserService(user)
+                val userService = UserService(user, activity)
                 val registered = withContext(Dispatchers.IO) { userService.register(activity, token).await() }
 
                 if (registered is Exception)  activity.runOnUiThread { throw registered }
@@ -117,7 +112,7 @@ class AuthService(private val activity: ComponentActivity) {
         }
     }
 
-    suspend fun getGoogleTokenFromRefreshToken(): String? {
+    private suspend fun getGoogleTokenFromRefreshToken(): String? {
         val refreshToken = sharedPreferencesService.getString("refreshToken")
         if (refreshToken == null) {
             val intent = Intent(activity, LoginActivity::class.java)

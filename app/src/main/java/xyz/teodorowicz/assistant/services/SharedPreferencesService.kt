@@ -2,13 +2,10 @@ package xyz.teodorowicz.assistant.services
 
 import android.content.Context
 import android.content.SharedPreferences
+import xyz.teodorowicz.assistant.models.User
 
 class SharedPreferencesService(context: Context) : ISharedPreferencesService {
-    private lateinit var sharedPreferences: SharedPreferences
-
-    init {
-        sharedPreferences = context.getSharedPreferences("xyz.teodorowicz.assistant", Context.MODE_PRIVATE)
-    }
+    private val sharedPreferences = context.getSharedPreferences("xyz.teodorowicz.assistant", Context.MODE_PRIVATE)
 
     override fun saveString(key: String, value: String) {
         sharedPreferences.edit().putString(key, value).apply()
@@ -32,5 +29,15 @@ class SharedPreferencesService(context: Context) : ISharedPreferencesService {
 
     override fun getBoolean(key: String): Boolean {
         return sharedPreferences.getBoolean(key, false)
+    }
+
+    override fun getUser(): User {
+        return User(
+            uid = getString("uid") ?: "",
+            firstName = getString("firstName") ?: "",
+            lastName = getString("lastName") ?: "",
+            email = getString("email") ?: "",
+            photoUrl = getString("photoUrl") ?: ""
+        )
     }
 }
