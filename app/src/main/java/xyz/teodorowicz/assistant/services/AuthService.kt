@@ -87,6 +87,7 @@ class AuthService(private val activity: ComponentActivity) {
                 if (registered is Exception)  activity.runOnUiThread { throw registered }
                 else if (registered is Boolean && registered) {
                     sharedPreferencesService.saveString("token", token ?: "")
+                    sharedPreferencesService.saveString("uid", user.uid)
                     sharedPreferencesService.saveInt("tokenIssuedAt", ((System.currentTimeMillis() - 10) / 1000).toInt())
                     sharedPreferencesService.saveString("userFirstName", user.firstName)
                     sharedPreferencesService.saveString("userLastName", user.lastName)
