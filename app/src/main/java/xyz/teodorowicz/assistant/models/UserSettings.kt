@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserSettings(
-    val aboutUser: String,
+    val aboutUser   : String,
     val userLocation: String
 )

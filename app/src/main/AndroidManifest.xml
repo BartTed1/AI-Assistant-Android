@@ -40,7 +40,7 @@
             android:exported="true"
             android:theme="@style/Theme.AIAssistant" />
         <activity
-            android:name="xyz.teodorowicz.assistant.views.ConfigureView"
+            android:name="xyz.teodorowicz.assistant.views.ConfigureActivity"
             android:exported="true"
             android:theme="@style/Theme.AIAssistant" />
 

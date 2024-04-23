@@ -3,7 +3,7 @@ package xyz.teodorowicz.assistant.views
 import android.content.Intent
 import android.graphics.Color.TRANSPARENT
 import android.os.Bundle
-import android.view.View
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -17,11 +17,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -39,14 +41,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import xyz.teodorowicz.assistant.services.AuthService
 import xyz.teodorowicz.assistant.services.SharedPreferencesService
 import xyz.teodorowicz.assistant.services.UserService
-import xyz.teodorowicz.assistant.ui.theme.GoogleColor
 import xyz.teodorowicz.assistant.ui.theme.Theme
 
-class ConfigureView : ComponentActivity() {
+class ConfigureActivity : ComponentActivity() {
     private lateinit var sharedPreferencesService: SharedPreferencesService
     private lateinit var userService: UserService
     private lateinit var authService: AuthService
@@ -81,15 +85,39 @@ class ConfigureView : ComponentActivity() {
         val isLoaded = remember { mutableStateOf(false) }
         val aboutUser = remember { mutableStateOf("") }
         val userLocation = remember { mutableStateOf("") }
+        val isDuringSaving = remember { mutableStateOf(false) }
 
         LaunchedEffect(key1 = Unit) {
             val userSettings = userService.getUserSettings()
             if (userSettings != null) {
-                aboutUser.value = userSettings.aboutUser
-                userLocation.value = userSettings.userLocation
+                aboutUser.value = userSettings.aboutUser ?: ""
+                userLocation.value = userSettings.userLocation ?: ""
             }
             isLoaded.value = true
+        }
 
+        fun goToMainActivity() {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        fun saveUserSettings() {
+            if (isDuringSaving.value) return
+            isDuringSaving.value = true
+            lifecycleScope.launch {
+                val response = userService.saveUserSettings(aboutUser.value, userLocation.value)
+                isDuringSaving.value = false
+                if (response.success) goToMainActivity()
+                else {
+                    when (response.status) {
+                        401 -> goToLoginActivity()
+                        500 -> Toast.makeText(this@ConfigureActivity, "Wystąpił błąd serwera", Toast.LENGTH_SHORT).show()
+                        503 -> Toast.makeText(this@ConfigureActivity, "Sieć nie jest dostępna", Toast.LENGTH_SHORT).show()
+                        else -> Toast.makeText(this@ConfigureActivity, "Wystąpił nieznany błąd", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
 
         Theme(
@@ -99,6 +127,7 @@ class ConfigureView : ComponentActivity() {
                 bottomBar = {
                     if (isLoaded.value) {
                         BottomAppBar (
+                            modifier = Modifier.imePadding(),
                             containerColor = Color.Transparent,
                             contentColor = MaterialTheme.colorScheme.onSurface
                         ) {
@@ -107,10 +136,10 @@ class ConfigureView : ComponentActivity() {
                                     .height(100.dp)
                                     .fillMaxWidth()
                                     .padding(16.dp),
-                                onClick = {},
+                                onClick = { saveUserSettings() },
+                                enabled = !isDuringSaving.value
                             ) {
-                                Text(text = "Zapisz")
-
+                                Text(text = if (aboutUser.value.isEmpty() || userLocation.value.isEmpty()) "Pomiń" else "Zapisz")
                             }
                         }
                     }
@@ -144,15 +173,18 @@ class ConfigureView : ComponentActivity() {
                                         RoundedCornerShape(32.dp)
                                     )
                                     .fillMaxWidth(),
-                                value = "",
-                                onValueChange = {  },
+                                value = aboutUser.value ?: "",
+                                onValueChange = { aboutUser.value = it },
                                 label = { Text(text = "Coś o tobie") },
                                 shape = RoundedCornerShape(8.dp),
                                 maxLines = Int.MAX_VALUE,
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     focusedBorderColor = Color.Transparent,
                                     unfocusedBorderColor = Color.Transparent
-                                )
+                                ),
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Next
+                                ),
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             TextField(
@@ -163,14 +195,20 @@ class ConfigureView : ComponentActivity() {
                                         RoundedCornerShape(32.dp)
                                     )
                                     .fillMaxWidth(),
-                                value = "",
-                                onValueChange = {  },
+                                value = userLocation.value ?: "",
+                                onValueChange = { userLocation.value = it },
                                 label = { Text(text = "Przybliżona lokalizacja, np. miasto") },
                                 shape = RoundedCornerShape(8.dp),
                                 maxLines = Int.MAX_VALUE,
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     focusedBorderColor = Color.Transparent,
                                     unfocusedBorderColor = Color.Transparent
+                                ),
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Done
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onDone = { saveUserSettings() }
                                 )
                             )
                         }

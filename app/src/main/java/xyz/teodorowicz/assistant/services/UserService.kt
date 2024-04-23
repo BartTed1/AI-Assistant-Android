@@ -18,6 +18,8 @@ import kotlinx.coroutines.async
 import kotlinx.serialization.json.Json
 import xyz.teodorowicz.assistant.models.User
 import xyz.teodorowicz.assistant.models.UserSettings
+import xyz.teodorowicz.assistant.models.UserSettingsResponse
+import java.net.ConnectException
 
 class UserService(
     private val user: User,
@@ -63,6 +65,32 @@ class UserService(
                 Log.e("UserService", "Failed to get user settings", e)
             }
             null
+        }
+    }
+
+    suspend fun saveUserSettings(aboutUser: String, userLocation: String): UserSettingsResponse {
+        val token = authService.getToken() // suspend function call
+        return try {
+            val url = "${baseUrl(activity)}/user/settings"
+            val response = client.post(url) {
+                headers {
+                    append("Authorization", "Bearer $token")
+                }
+                contentType(io.ktor.http.ContentType.Application.Json)
+                setBody(UserSettings(aboutUser, userLocation))
+                parameter("uid", user.uid)
+            }
+            response.body<UserSettingsResponse>()
+        } catch (e: Exception) {
+            activity.runOnUiThread {
+                Log.e("UserService", "token: $token")
+                Log.e("UserService", "Failed to save user settings", e)
+            }
+            if (e is ConnectException && e.message == "Network is unreachable") {
+                UserSettingsResponse(false, "Network is unreachable", status = 503, null)
+            } else {
+                UserSettingsResponse(false, "Internal server error", status = 500, null)
+            }
         }
     }
 }

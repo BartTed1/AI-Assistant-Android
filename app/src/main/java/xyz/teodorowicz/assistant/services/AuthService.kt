@@ -20,6 +20,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import xyz.teodorowicz.assistant.R
 import xyz.teodorowicz.assistant.models.User
+import xyz.teodorowicz.assistant.views.ConfigureActivity
 import xyz.teodorowicz.assistant.views.LoginActivity
 import xyz.teodorowicz.assistant.views.MainActivity
 
@@ -95,7 +96,7 @@ class AuthService(private val activity: ComponentActivity) {
                     sharedPreferencesService.saveString("userPhotoUrl", user.photoUrl)
                     sharedPreferencesService.saveString("refreshToken", idToken)
 
-                    val intent = Intent(activity, MainActivity::class.java)
+                    val intent = Intent(activity, ConfigureActivity::class.java)
                     activity.startActivity(intent)
                     activity.finish()
                 } else {
