@@ -45,7 +45,7 @@ class UserService(
         }
     }
 
-    suspend fun getUserSettings(): UserSettings {
+    suspend fun getUserSettings(): UserSettings? {
         val token = authService.getToken() // suspend function call
         return try {
             val url = "${baseUrl(activity)}/user/settings"
@@ -62,7 +62,7 @@ class UserService(
                 Log.e("UserService", "token: $token")
                 Log.e("UserService", "Failed to get user settings", e)
             }
-            UserSettings("", "")
+            null
         }
     }
 }
